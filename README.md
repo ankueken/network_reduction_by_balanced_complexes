@@ -18,15 +18,15 @@ Model structure requirements:
 -----------------------------
 
 Networks to analyze need to have at least the following fields (according to cobra model structure):
-	.S – stoichiometric matrix (type double, size m x n)
-	.mets – cell array of metabolite names (size m x 1)
-	.rxns – cell array of reaction names (size n x 1)
-	.c - vector of objective coefficients (size n x 1)
-	.lb - lower bounds on variables (size n x 1)
-	.ub - upper bounds on variables (size n x 1)
-	.b – right-hand side vector (size m x 1)
-	.csense – vector indicating type of constraint (size m x 1)
-	(‘E’ for equality, ‘G’ for greater than or equal, ‘L’ for less than or equal)
+		.S – stoichiometric matrix (type double, size m x n)
+		.mets – cell array of metabolite names (size m x 1)
+		.rxns – cell array of reaction names (size n x 1)
+		.c - vector of objective coefficients (size n x 1)
+		.lb - lower bounds on variables (size n x 1)
+		.ub - upper bounds on variables (size n x 1)
+		.b – right-hand side vector (size m x 1)
+		.csense – vector indicating type of constraint (size m x 1)
+		(‘E’ for equality, ‘G’ for greater than or equal, ‘L’ for less than or equal)
 
 Folders and files:
 -----------------
