@@ -28,7 +28,7 @@ Networks to analyze need to have at least the following fields (according to cob
 	.csense – vector indicating type of constraint (size m x 1)
 	(‘E’ for equality, ‘G’ for greater than or equal, ‘L’ for less than or equal)
 
-Folder and files:
+Folders and files:
 -----------------
 
 functions/:
