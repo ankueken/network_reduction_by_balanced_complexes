@@ -5,28 +5,31 @@ Code for reproduction of data presented in “A structural property for reductio
 The structural property of balancing of complexes can be effectively used in model reduction under mild network structure conditions, while preserving the steady-states supported by the network.
 
 System requirements: 
+--------------------
 
 Standard computer with any operating system, the code was tested 	on Windows 10.
 To run the code R language with package igraph and R.matlab as well 	as MATLAB together with Optimization Toolbox, glpk solver and CobraToolbox 
 Heirendt et al. 2019, Nature Protocols https://opencobra.github.io/cobratoolbox/stable/installation.html) for MATLAB have to be installed.
 
-	Tested for R version 4.0.2, igraph v. 1.2.5, R.matlab v. 3.6.2,
-	MATLAB R2019a, Optimization Toolbox Version 8.3, Cobra Toolbox 2017
+Tested for R version 4.0.2, igraph v. 1.2.5, R.matlab v. 3.6.2,
+MATLAB R2019a, Optimization Toolbox Version 8.3, Cobra Toolbox 2017
 
 Model structure requirements:
+-----------------------------
 
-	Networks to analyze need to have at least the following fields 	(according to cobra model structure):
-		.S – stoichiometric matrix (type double, size m x n)
-		.mets – cell array of metabolite names (size m x 1)
-		.rxns – cell array of reaction names (size n x 1)
-		.c - vector of objective coefficients (size n x 1)
-		.lb - lower bounds on variables (size n x 1)
-		.ub - upper bounds on variables (size n x 1)
-		.b – right-hand side vector (size m x 1)
-		.csense – vector indicating type of constraint (size m x 1)
-(‘E’ for equality, ‘G’ for greater than or equal, ‘L’ for less than or equal)
+Networks to analyze need to have at least the following fields (according to cobra model structure):
+	.S – stoichiometric matrix (type double, size m x n)
+	.mets – cell array of metabolite names (size m x 1)
+	.rxns – cell array of reaction names (size n x 1)
+	.c - vector of objective coefficients (size n x 1)
+	.lb - lower bounds on variables (size n x 1)
+	.ub - upper bounds on variables (size n x 1)
+	.b – right-hand side vector (size m x 1)
+	.csense – vector indicating type of constraint (size m x 1)
+	(‘E’ for equality, ‘G’ for greater than or equal, ‘L’ for less than or equal)
 
 Folder and files:
+-----------------
 
 functions/:
 clean_model.m: model preprocessing 
