@@ -7,9 +7,9 @@ The structural property of balancing of complexes can be effectively used in mod
 System requirements: 
 --------------------
 
-Standard computer with any operating system, the code was tested 	on Windows 10.
-To run the code R language with package igraph and R.matlab as well 	as MATLAB together with Optimization Toolbox, glpk solver and CobraToolbox 
-Heirendt et al. 2019, Nature Protocols https://opencobra.github.io/cobratoolbox/stable/installation.html) for MATLAB have to be installed.
+Standard computer with any operating system, the code was tested on Windows 10.
+To run the code R language with package igraph and R.matlab as well as MATLAB together with Optimization Toolbox and CobraToolbox 
+(Heirendt et al. 2019, Nature Protocols https://opencobra.github.io/cobratoolbox/stable/installation.html) for MATLAB have to be installed.
 
 Tested for R version 4.0.2, igraph v. 1.2.5, R.matlab v. 3.6.2,
 MATLAB R2019a, Optimization Toolbox Version 8.3, Cobra Toolbox 2017
