@@ -2,7 +2,10 @@
 %% shown in example_figure.png
 
 addpath('..\functions\')
-changeCobraSolver('glpk')
+mkdir('..','Results')
+mkdir('../Results\','Results_irreversibility_considered')
+mkdir('../Results\','final_models_irreversibility_considered')
+
 clear
 % example network
 %        v1 v2 v3 v4 v5 v6 v7 v8 v9 v10
@@ -13,7 +16,8 @@ model.S=[-2  2  0  0  0  0  1 -1  0  0; % A
           0  0  0  0  0  0  1 -1  0  0; % E
           0  0  0  0  0  0  0  1  1 -1];% F
 model.mets={'A';'B';'C';'D';'E';'F'};
-model.rxns={'v1';'v2';'v3';'v4';'v5';'v6';'v7';'v8';'v9';'v10'};
+model.rxns={'2A->B';'B->2A';'B->C';'B+C->D';'D->B+C';...
+    'D->2B';'2B->A+E';'A+E->F';'2B->F';'F->2B'};
 model.c=zeros(size(model.rxns));
 model.lb=zeros(size(model.rxns));
 model.ub=ones(size(model.rxns))*1000;

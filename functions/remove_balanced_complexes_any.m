@@ -216,14 +216,6 @@ for b=1:length(B)
         m_remove=find(all(model_new.Y'==0));
     end
     
-    %% check feasibility of model after removal
-    model_new.c(1)=1;
-    Sol=optimizeCbModel(model_new);
-    model_new.c(:)=0;
-    if sum(abs(Sol.x))==0
-        model_new=model_new_temp;
-        status(b)=-1;
-    end
 end
 
 end

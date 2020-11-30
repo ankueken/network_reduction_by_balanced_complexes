@@ -1,4 +1,4 @@
-function [model,BLK] = clean_model(name,model,constraints,pathToR,BLK,threshold)
+function [model,BLK] = clean_model(name,model,constraints,pathToR,threshold)
 % function to preprocess models used to identify balanced complexes
 %
 % [model,BLK] = clean_model(name,model,constraints,threshold,pathToR,BLK)
@@ -20,7 +20,6 @@ function [model,BLK] = clean_model(name,model,constraints,pathToR,BLK,threshold)
 %                                  (i.e. biomass)
 %       pathToR: specify path to R in the form given below 
 %                e.g. '"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"'
-%       BLK: indices of reactions blocked in the original model (optional)
 %       threshold: value when to consider complex balanced (e.g. 1e-9)
 %                  (optional)
 %
@@ -35,12 +34,11 @@ function [model,BLK] = clean_model(name,model,constraints,pathToR,BLK,threshold)
 %   check if there are zero rows or columns in the stoichiometric matrix
 %   and remove them
 % Step 2:
-%   identify and remove blocked reactions
-% Step 3:
 %   set case (all reversible, irreversibility considered, objective)
+%   and convert to irreversibility
+% Step 3:
+%   identify and remove blocked reactions
 % Step 4:
-%   convert to irreversibility
-% Step 5:
 %   calculate A and Y matrix
 %
 % -----------------------------------------------------------
@@ -52,15 +50,10 @@ end
 model=removeRxns(model,model.rxns(find(all(model.S==0))));
 model=removeMetabolites(model,model.mets(find(all(model.S'==0))));
 
-% Step 2. Find and remove blocked reactions
-if ~exist('BLK','var')
-    [mini,maxi]=linprog_FVA(model,0);
-    BLK=model.rxns(intersect(find(abs(mini)<threshold),find(abs(maxi)<threshold)));
-end
-model=removeRxns(model,BLK);
+% Step 2. Set constraints
 
-% Step 3-4. convert to irreversibility and set constraints
-if all(model.c==0) && strcmp(constraints,'objective')
+% find biomass coefficient
+if all(model.c==0)
     obj=find(contains(model.rxns,'bio','IgnoreCase',true));
     % N. pharaonis: model.c(132)=1; find(strcmp(model.rxns,'RM00001'))
     if isempty(obj)
@@ -71,32 +64,39 @@ if all(model.c==0) && strcmp(constraints,'objective')
     end
 end
 
-lb_rev=model.lb;ub_rev=model.ub;
-
-% Convert to irreversible
-model.ub(:)=max(model.ub);
-model.lb(:)=min(model.lb);
-model=convertToIrreversible(model);
-if min(lb_rev)<0
-    model.ub=[ub_rev;abs(lb_rev)];
-end
-
-% Remove reversibility constraint
+% all reactions considered reversible
 if strcmp(constraints,'all_reversible')
     model.ub(:)=max(model.ub);
     model.lb(:)=min(model.lb);
+    model.lb(model.c~=0)=0; % biomass reaction always considered irreversible
+    model=convertToIrreversible(model);
+    [~,Sol.f]=linprog(-model.c,[],[],model.S,model.b,model.lb,model.ub);
+end
+
+% reaction irreversibility considered
+if strcmp(constraints,'irreversibility_considered')
+    model.lb(model.c~=0)=0; % biomass reaction always considered irreversible
+    model=convertToIrreversible(model);
+    [~,Sol.f]=linprog(-model.c,[],[],model.S,model.b,model.lb,model.ub);
 end
 
 % Set objective to maximize
 if strcmp(constraints,'objective')
-    Sol=optimizeCbModel(model);
-    model.lb(model.c~=0)=Sol.f*0.99;
-    model.ub(model.c~=0)=Sol.f*0.99;
+    model.lb(model.c~=0)=0;
+    model=convertToIrreversible(model);
+    [~,Sol.f]=linprog(-model.c,[],[],model.S,model.b,model.lb,model.ub);
+    model.lb(model.c~=0)=Sol.f*-0.99;
+    model.ub(model.c~=0)=Sol.f*-0.99;
 end
 
+% Step 3. Find and remove blocked reactions
+[mini,maxi]=linprog_FVA(model,0);
+BLK=model.rxns(intersect(find(abs(mini)<threshold),find(abs(maxi)<threshold)));
+model=removeRxns(model,BLK);
+[~,Sol.f]=linprog(-model.c,[],[],model.S,model.b,model.lb,model.ub);
 model.c(:)=0;
 
-% Step 5. Compute A and Y matrix and save model
+% Step 4. Compute A and Y matrix and save model
 
 if strcmp(constraints,'all_reversible')
     save(strcat('Results/final_models_all_reversible/',name,'_final_model.mat'))

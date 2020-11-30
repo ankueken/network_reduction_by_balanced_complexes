@@ -5,7 +5,6 @@
 % located in networks/GEM_xml to species_list 
 
 clear
-changeCobraSolver('glpk')
 
 addpath('functions\')
 mkdir('.','Results')
@@ -31,9 +30,9 @@ for s=1:length(species_list)
         % 'all_reversible' - all reactions considered reversible
         % 'irreversibility_considered' - reaction irreversibility considered
         % 'objective' - maximize objective function 
-    [model_n,BLK]=clean_model(name,model,'all_reversible','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"');
-    [model_r]=clean_model(name,model,'irreversibility_considered','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"',BLK);
-    [model_o]=clean_model(name,model,'objective','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"',BLK);
+    [model_n]=clean_model(name,model,'all_reversible','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"');
+    [model_r]=clean_model(name,model,'irreversibility_considered','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"');
+    [model_o]=clean_model(name,model,'objective','"C:\Program Files\R\R-3.6.1\bin\Rscript.exe"');
 
     %% find and remove balanced complexes for each scenario
     disp('all_reversible - any kinetic')
