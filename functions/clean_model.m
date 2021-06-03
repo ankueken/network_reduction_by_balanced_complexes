@@ -27,7 +27,7 @@ function [model,BLK] = clean_model(name,model,constraints,pathToR,threshold)
 %       model: preprocessed model, extended by fields .A and .Y
 %              no blocked reactions, reversible reactions split
 %              constraints according to specified scenario
-%              ('none','rev','obj')
+%              ('all_reversible', 'irreversibility_considered', 'objective')
 %       BLK: indices of reactions blocked in the original model
 %
 % Step 1:
